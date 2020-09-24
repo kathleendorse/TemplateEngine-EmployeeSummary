@@ -48,7 +48,7 @@ const init = ()=>{
 //FUNCTIONS TO BUILD DIFFERENT TEAM MEMBERS USING INQUIRER PROMPT :
 
 //Generates manager object using inquirer prompt, pushes it to the employees array and stops accepting managers when finished
-async function createManager () {
+const createManager = () => {
     inquirer.prompt([
         {
           type: "input",
@@ -71,8 +71,8 @@ async function createManager () {
             message: "What is your manager's office number?"
         }
     ]).then(function(data){
-        manager = new Manager(data.name, data.id, data.email, data.officeNumber);
-        employees.push(manager);
+        employee = new Manager(data.name, data.id, data.email, data.officeNumber);
+        employees.push(employee);
         console.log(employees);
         acceptManager = false;
         createEmployee();
@@ -95,7 +95,7 @@ const createEmployee = () =>{
         ]}
     ).then(function(data){
         if(data.choices === "Intern"){
-            console.log("Running the intern function");
+            createIntern();
         }
     });
 //.then(  evaluate user selection in some way
@@ -124,14 +124,43 @@ const createEmployee = () =>{
 // }
 
 // //Generates an Intern object using inquirer prompt, pushes it to the employees array and runs the createEmployee function again when finished
-// const createIntern = () =>{
+const createIntern = () =>{
+    inquirer.prompt([
+        {
+          type: "input",
+          name: "name",
+          message: "What is your intern's name?"
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "What is your intern's id?"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "What is your intern's email?"
+        },
+        {
+            type: "input",
+            name: "school",
+            message: "What is your intern's school?"
+        }
+    ]).then(function(data){
+        employee = new Intern(data.name, data.id, data.email, data.officeNumber);
+        employees.push(employee);
+        console.log(employees);
+        createEmployee();
+        // acceptEngineer = true;
+        // acceptIntern = true;
+    });  
+}
 
 //     //inquirer.prompt.... (still need to flesh out)
 
 //     employees.push(obj); //* obj??? syntax??
 
 //     createEmployee();
-// }
 
 
 //initalize the application
