@@ -28,6 +28,10 @@
   `
 
   ## Usage
+    `
+  node app.js
+  `
+  
   The generated file will appear in the output sub directory which can be loaded in the browser
   
   <img src="https://github.com/kathleendorse/TemplateEngine-EmployeeSummary/blob/master/assets/commandLineView.png?raw=true"></img>
