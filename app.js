@@ -14,40 +14,27 @@ const render = require("./lib/htmlRenderer");
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
+// After the user has input all employees desired, call the `render` function (required
+// above) and pass in an array containing all employee objects; the `render` function will
+// generate and return a block of HTML including templated divs for each employee!
+
 //-----------------------------------------------------------------------------------------------
 
 //GLOBAL VARIABLES:
 
-
 const employees = [];
 let acceptEmployees = true;
-let acceptManager = true;
-// let acceptEngineer = true;
-// let acceptIntern = true;
 
-//function that initializes the application
+//INITALIZATION LOGIC:
+
 const init = ()=>{
-    //if employees are not accepted- return /do NOT execute function
-    if(!acceptEmployees){
-        return;
-    }
-    //otherwise run the program
-    else{
+
         console.log("Please build your team");
-        //if accept manager is true, run the create manager function
-        if(acceptManager){
-            createManager();
-        }
-        //otherwise run the create employee method
-        else{
-            createEmployee();
-        }
-    }
+        createManager();
 };
 
-//FUNCTIONS TO BUILD DIFFERENT TEAM MEMBERS USING INQUIRER PROMPT :
+//FUNCTIONS RESPONSIBLE FOR BUILDING EMPLOYEE OBJECTS:
 
-//Generates manager object using inquirer prompt, pushes it to the employees array and stops accepting managers when finished
 const createManager = () => {
     inquirer.prompt([
         {
@@ -73,16 +60,10 @@ const createManager = () => {
     ]).then(function(data){
         employee = new Manager(data.name, data.id, data.email, data.officeNumber);
         employees.push(employee);
-        console.log(employees);
-        acceptManager = false;
         createEmployee();
-        // acceptEngineer = true;
-        // acceptIntern = true;
     });  
 }
 
-//Logic for prompting user with options to add Interns, Engineers or stop adding all together 
-//Response determines which functions (if any) are called
 const createEmployee = () =>{
     inquirer.prompt({
         type: "list",
@@ -97,33 +78,46 @@ const createEmployee = () =>{
         if(data.choices === "Intern"){
             createIntern();
         }
+        else if (data.choices === "Engineer"){
+            createEngineer();
+        }
+            //CALLS RENDER FUNCTION WHEN USER IS DONE INPUTTING EMPLOYEES
+        else{
+            acceptEmployees = false;
+            console.log(render(employees)); //*Currently console logs the updated templates returns by the render file.
+        }
     });
-//.then(  evaluate user selection in some way
-//         // if (I dont  want to add any more employees){
-//             //acceptEmployees = false;
-//             //return;
-//         //}      
-//         //else{
-//             //if (employeeType === "Intern"){
-//             //    createIntern();
-//             //}
-//             //else{
-//             //    createEngineer();
-//             //}
-    }
-//);
+}
 
+const createEngineer = () =>{
+    inquirer.prompt([
+        {
+          type: "input",
+          name: "name",
+          message: "What is your engineer's name?"
+        },
+        {
+            type: "input",
+            name: "id",
+            message: "What is your engineer's id?"
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "What is your engineer's email?"
+        },
+        {
+            type: "input",
+            name: "github",
+            message: "What is your engineer's Github?"
+        }
+    ]).then(function(data){
+        employee = new Engineer(data.name, data.id, data.email, data.github);
+        employees.push(employee);
+        createEmployee();
+    });
+}
 
-// //Generates an engineer object using inquirer prompt, pushes it to the employees array and runs createEmployee function again when finished
-// const createEngineer = () =>{
-
-//     //inquirer.prompt.... (still need to flesh out)
-
-//     employees.push(obj); //* obj??? syntax??
-//     createEmployee();
-// }
-
-// //Generates an Intern object using inquirer prompt, pushes it to the employees array and runs the createEmployee function again when finished
 const createIntern = () =>{
     inquirer.prompt([
         {
@@ -147,81 +141,22 @@ const createIntern = () =>{
             message: "What is your intern's school?"
         }
     ]).then(function(data){
-        employee = new Intern(data.name, data.id, data.email, data.officeNumber);
+        employee = new Intern(data.name, data.id, data.email, data.school);
         employees.push(employee);
-        console.log(employees);
         createEmployee();
-        // acceptEngineer = true;
-        // acceptIntern = true;
     });  
 }
 
-//     //inquirer.prompt.... (still need to flesh out)
 
-//     employees.push(obj); //* obj??? syntax??
+//RUN THE INITIALIZATION FUNCTION
 
-//     createEmployee();
-
-
-//initalize the application
 init();
 
 
 
 
-// startDevTeam = ()=>{
-//     try{
-//         let employees = [];
-//         let employeType = no
-//         console.log("Please build your team"); //**this works */
-//         inquirer.prompt({
-//             type: "input",
-//             name: "name",
-//             message: "What is your manager's name?"
-//           })
-//         // const { employee } = await inquirer.prompt(
-
-//         // )
-//         // .then({});
-//     }
-//     catch{
-
-//     }
-
-// }
-
-// startDevTeam();
-
-// Please build your team
-
-// What is your manager's name?
-// What is your manager's id?
-// What is your manager's email?
-// What is your manager's office number?
-
-// Which type of team member would you like to add?
-// Engineer
-// Intern
-// I don't want to add any more team members
-
-// What is your engineer's name?
-// What is your engineer's id?
-// What is your engineer's email?
-// What is your engineer's Github username?
-
-// What is your intern's name?
-// What is your intern's id?
-// What is your intern's email?
-// What is your intern's  school name?
 
 
-
-//structure logic of prompts based on user input 
-
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
 
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
@@ -240,28 +175,3 @@ init();
 // for the provided `render` function to work! ```
 
 
-
-
-//if employee type  - manager, prompt.....
-
-
-
-//create an array of employees
-//array contains objects
-//each object has an employee type (manager, engineer, intern)
-
-//use inquirer to prompt the user for an employee type (role)
-//.then use the employee type to present prompts for additional info
-//when the program begins the employee type is assumed to be managwe
-
-
-//within build team we have 
-//console log 
-//an array of objects and booleans- 
-//is manager/engineer/intern- when program stars is manager is true/ intern and engineer are false. 
-
-//
-//separate functions for each employee type
-
-
-//init 
