@@ -1,5 +1,5 @@
 
-  # Employee Management System        
+  # Team Profile Generator       
   [ ![GitHub license] (https://img.shields.io/badge/license-None-blue.svg) ](https://github.com/kathleendorse/TemplateEngine-EmployeeSummary)
   
   ## Description
